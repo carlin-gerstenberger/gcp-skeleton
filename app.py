@@ -3,5 +3,5 @@ def add(x, y):
 
 
 print(add(2, 2))
-var = 1
-var = var
+#var = 1
+#var = var
