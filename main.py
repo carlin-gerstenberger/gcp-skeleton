@@ -1,21 +1,22 @@
-# pylint: disable=no-name-in-module
-# pylint: disable=no-self-argument
-import uvicorn
-from fastapi import FastAPI
-
-app = FastAPI()
-
-@app.get("/")
-async def root():
-    return {"message": "Hello Carlin"}
-
-@app.get("/add/{num1}/{num2}")
-async def add(num1: int, num2: int):
-    """Add two numbers together"""
-
-    total = num1 + num2
-    return {"total": total}
+from flask import Flask
+from flask_restful import Api
+from bq import bq
 
 
-if __name__ == '__main__':
-    uvicorn.run(app, port=8080, host='0.0.0.0')
+app = Flask(__name__)
+api = Api(app)
+
+query = '''
+        SELECT geo.country AS country, COUNT(DISTINCT user_pseudo_id) AS count
+        FROM `podcastapp-767c2.analytics_193436959.events_*` 
+        WHERE device.operating_system = 'IOS'
+        GROUP BY geo.country
+limit 100;
+'''
+
+@app.route("/")
+def home():
+    return bq(query)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080, debug=True)
