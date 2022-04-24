@@ -2,5 +2,14 @@ pylint
 pytest
 black
 flask
+flask_restful
 fastapi
 uvicorn[standard]
+numpy
+pandas
+requests
+google-cloud-bigquery-storage
+google-cloud-bigquery
+google
+gunicorn
+db_dtypes
